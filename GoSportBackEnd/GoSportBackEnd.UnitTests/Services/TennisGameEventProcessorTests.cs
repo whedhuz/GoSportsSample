@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using GoSportBackEnd.Services.Gateways.Interfaces;
 using GoSportBackEnd.Services.Models;
@@ -34,7 +35,10 @@ namespace GoSportBackEnd.UnitTests.Services
                 _eventobj = new Event
                 {
                     Type = "game.tennis.unknown",
-                    Content = "gameId"
+                    ContentJson = JsonSerializer.Serialize(new TennisEventObject
+                    {
+                        GameId = "gameId"
+                    })
                 };
             }
 
@@ -57,7 +61,10 @@ namespace GoSportBackEnd.UnitTests.Services
                 _eventobj = new Event
                 {
                     Type = "game.tennis.changeserver",
-                    Content = "gameId"
+                    ContentJson = JsonSerializer.Serialize(new TennisEventObject
+                    {
+                        GameId = "gameId"
+                    })
                 };
 
                 _tennisMatchDetails = new MatchDetails

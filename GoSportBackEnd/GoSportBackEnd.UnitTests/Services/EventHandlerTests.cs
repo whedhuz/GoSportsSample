@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using GoSportBackEnd.Services.Models;
+using GoSportBackEnd.Services.Models.Tennis;
 using GoSportBackEnd.Services.Services;
 using GoSportBackEnd.Services.Services.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -34,10 +36,10 @@ namespace GoSportBackEnd.UnitTests.Services
                 _eventobj = new Event
                 {
                     Type = "able.to.process",
-                    Content = new
+                    ContentJson = JsonSerializer.Serialize(new TennisEventObject
                     {
-                        name = "test name"
-                    }
+                        GameId = "gameId"
+                    })
                 };
                 
                 _eventProcessorMock.Setup(m => m.CanProcess("able.to.process")).Returns(true);
@@ -61,10 +63,10 @@ namespace GoSportBackEnd.UnitTests.Services
                 _eventobj = new Event
                 {
                     Type = "able.to.process",
-                    Content = new
+                    ContentJson = JsonSerializer.Serialize(new TennisEventObject
                     {
-                        name = "test name"
-                    }
+                        GameId = "gameId"
+                    })
                 };
                 
                 _eventProcessorMock.Setup(m => m.CanProcess("able.to.process")).Returns(false);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using GoSportBackEnd.Services.Gateways.Interfaces;
 using GoSportBackEnd.Services.Models;
@@ -48,8 +49,8 @@ namespace GoSportBackEnd.Services.Services.EventProcessors
                 {
                     case "game.tennis.changeserver":
                     {
-                        var matchId = eventObj.Content as string;
-                        if (matchId == null)
+                        var tennisEventObject = JsonSerializer.Deserialize<TennisEventObject>(eventObj.ContentJson);
+                        if (tennisEventObject == null)
                         {
                             _logger.LogError("Unable to convert event object to matchId {@event}", eventObj);
                             await _eventLoggerGateway.LogEvent(eventObj, false);
@@ -59,7 +60,7 @@ namespace GoSportBackEnd.Services.Services.EventProcessors
                             };
                         }
 
-                        var responseObj = await RunChangeServerAsync(matchId);
+                        var responseObj = await RunChangeServerAsync(tennisEventObject.GameId);
                         await _eventLoggerGateway.LogEvent(eventObj, true);
                         return new SuccessResponse
                         {
