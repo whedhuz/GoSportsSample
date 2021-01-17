@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using GoSportBackEnd.Services.Models;
@@ -21,10 +22,11 @@ namespace GoSportBackEnd.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(string), (int) HttpStatusCode.OK)]
         public async Task<ActionResult> Post(Event eventObj)
         {
             await _eventHandler.ProcessEventAsync(eventObj);
-            return Ok();
+            return Ok(eventObj.Type);
         }
     }
 }
