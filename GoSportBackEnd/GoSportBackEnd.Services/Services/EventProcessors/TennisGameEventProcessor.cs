@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GoSportBackEnd.Services.Gateways.Interfaces;
 using GoSportBackEnd.Services.Models;
+using GoSportBackEnd.Services.Models.Tennis;
 using GoSportBackEnd.Services.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -12,6 +13,7 @@ namespace GoSportBackEnd.Services.Services.EventProcessors
     {
         private readonly ILogger<TennisGameEventProcessor> _logger;
         private readonly IEventLoggerGateway _eventLoggerGateway;
+        private readonly ITennisGameGateway _tennisGameGateway;
 
         public string[] EventTypes = new[]
         {
@@ -24,10 +26,12 @@ namespace GoSportBackEnd.Services.Services.EventProcessors
             //"game.tennis.gamewon",
         };
 
-        public TennisGameEventProcessor(ILogger<TennisGameEventProcessor> logger, IEventLoggerGateway eventLoggerGateway)
+        public TennisGameEventProcessor(ILogger<TennisGameEventProcessor> logger,
+            IEventLoggerGateway eventLoggerGateway, ITennisGameGateway tennisGameGateway)
         {
             _logger = logger;
             _eventLoggerGateway = eventLoggerGateway;
+            _tennisGameGateway = tennisGameGateway;
         }
 
         public bool CanProcess(string eventType)
@@ -44,24 +48,44 @@ namespace GoSportBackEnd.Services.Services.EventProcessors
                 {
                     case "game.tennis.changeserver":
                     {
-                        break;
+                        var matchId = eventObj.Content as string;
+                        if (matchId == null)
+                        {
+                            _logger.LogError("Unable to convert event object to matchId {@event}", eventObj);
+                            await _eventLoggerGateway.LogEvent(eventObj, false);
+                            return new ErrorResponse
+                            {
+                                ErrorMsg = "Unable to process event object"
+                            };
+                        }
+
+                        var responseObj = await RunChangeServerAsync(matchId);
+                        await _eventLoggerGateway.LogEvent(eventObj, true);
+                        return new SuccessResponse
+                        {
+                            Id = new Guid(),
+                            ResponseObj = responseObj
+                        };
                     }
 
                     default:
                         throw new ApplicationException("Unhandled tennis game event type");
                 }
-                
-                await _eventLoggerGateway.LogEvent(eventObj, true);
-                return new SuccessResponse
-                {
-                    Id = new Guid()
-                };
             }
             catch (Exception e)
             {
+                _logger.LogError("Unhandled exception for event {@event}, exception {@ex}", eventObj, e);
                 await _eventLoggerGateway.LogEvent(eventObj, false);
                 throw;
             }
+        }
+
+        private async Task<MatchDetails> RunChangeServerAsync(string matchId)
+        {
+            var matchDetails = await _tennisGameGateway.GetAsync(matchId);
+            matchDetails.ServingPlayer = matchDetails.ServingPlayer == 1 ? 2 : 1;
+           var updatedMatchDetails = await _tennisGameGateway.UpdateAsync(matchDetails);
+           return updatedMatchDetails;
         }
     }
 }
