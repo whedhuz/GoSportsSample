@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TennisService } from './tennisService/tennis.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+  constructor(private tennis:TennisService){
+
+  }
   title = 'GoSportWebPage';
+
+
 }
