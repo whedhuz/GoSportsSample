@@ -1,5 +1,7 @@
 using System.Linq;
 using System.Reflection;
+using GoSportBackEnd.Services.Gateways;
+using GoSportBackEnd.Services.Gateways.Interfaces;
 using GoSportBackEnd.Services.Services.EventProcessors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,9 +32,10 @@ namespace GoSportBackEnd
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GoSportBackEnd", Version = "v1" });
             });
-
+            
             services.AddScoped<IEventHandler, EventHandler>();
-            services.RegisterAllTypes<IEventProcessor>(new[] {typeof(GameEventProcessor).Assembly});
+            services.AddScoped<IEventLoggerGateway, EventLoggerGateway>();
+            services.RegisterAllTypes<IEventProcessor>(new[] {typeof(TennisGameEventProcessor).Assembly});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

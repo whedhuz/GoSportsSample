@@ -24,7 +24,7 @@ namespace GoSportBackEnd.Services.Services
             EventResponse response;
             if (applicableProcessor != null) 
             {
-                response = await applicableProcessor.ProcessEvent(eventObj);
+                response = await applicableProcessor.ProcessEventAsync(eventObj);
             }
             else
             {

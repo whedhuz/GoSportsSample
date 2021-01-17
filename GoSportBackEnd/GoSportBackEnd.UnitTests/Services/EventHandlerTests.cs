@@ -49,7 +49,7 @@ namespace GoSportBackEnd.UnitTests.Services
                 await _sut.ProcessEventAsync(_eventobj);
                 
                 _eventProcessorMock.Verify(m => m.CanProcess("able.to.process"), Times.Once);
-                _eventProcessorMock.Verify(m => m.ProcessEvent(It.IsAny<Event>()), Times.Once);
+                _eventProcessorMock.Verify(m => m.ProcessEventAsync(It.IsAny<Event>()), Times.Once);
             }
         }
 
@@ -77,7 +77,7 @@ namespace GoSportBackEnd.UnitTests.Services
 
                 Assert.IsAssignableFrom<ErrorResponse>(response);
                 _eventProcessorMock.Verify(m => m.CanProcess("able.to.process"), Times.Once);
-                _eventProcessorMock.Verify(m => m.ProcessEvent(It.IsAny<Event>()), Times.Never);
+                _eventProcessorMock.Verify(m => m.ProcessEventAsync(It.IsAny<Event>()), Times.Never);
             }
         }
     }
