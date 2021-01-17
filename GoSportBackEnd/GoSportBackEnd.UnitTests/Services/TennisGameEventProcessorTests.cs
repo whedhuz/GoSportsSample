@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using GoSportBackEnd.Services.Gateways.Interfaces;
 using GoSportBackEnd.Services.Models;
@@ -21,6 +22,29 @@ namespace GoSportBackEnd.UnitTests.Services
             _sut = new TennisGameEventProcessor(Mock.Of<ILogger<TennisGameEventProcessor>>(), _eventLoggerGatewayMock.Object);
         }
 
+        public class WhenExceptionOccur: TennisGameEventProcessorTests
+        {
+            public override void Setup()
+            {
+                base.Setup();
+                _eventobj = new Event
+                {
+                    Type = "game.tennis.unknown",
+                    Content = new
+                    {
+                        gameId = "gameId"
+                    }
+                };
+            }
+
+            [Test]
+            public void ThenUpdateEventLogDetails_WithFailureToProcess()
+            {
+                Assert.ThrowsAsync<ApplicationException>(async () => await _sut.ProcessEventAsync(_eventobj));
+                _eventLoggerGatewayMock.Verify(m => m.LogEvent(It.IsAny<Event>(), It.Is<bool>(b => b == false)), Times.Once);
+            }
+        }
+
         public class WhenTennisGameChangeServerEvent : TennisGameEventProcessorTests
         {
             public override void Setup()
@@ -37,10 +61,17 @@ namespace GoSportBackEnd.UnitTests.Services
             }
 
             [Test]
-            public async Task ThenUpdateEventLogDetails()
+            public async Task ThenUpdateMatchDetails()
             {
                 var response = await _sut.ProcessEventAsync(_eventobj);
-                _eventLoggerGatewayMock.Verify(m => m.LogEvent(It.IsAny<Event>()), Times.Once);
+                _eventLoggerGatewayMock.Verify(m => m.LogEvent(It.IsAny<Event>(), It.Is<bool>(b => b == true)), Times.Once);
+            }
+
+            [Test]
+            public async Task ThenUpdateEventLogDetails_WithSuccessToProcess()
+            {
+                var response = await _sut.ProcessEventAsync(_eventobj);
+                _eventLoggerGatewayMock.Verify(m => m.LogEvent(It.IsAny<Event>(), It.Is<bool>(b => b == true)), Times.Once);
             }
         }
     }
