@@ -25,6 +25,8 @@ namespace GoSportBackEnd.Services.Services.EventProcessors
             //"game.tennis.score",
             //"game.tennis.setwon",
             //"game.tennis.gamewon",
+            //"game.tennis.selectserver",
+            //"game.tennis.gamecancelled",
         };
 
         public TennisGameEventProcessor(ILogger<TennisGameEventProcessor> logger,
@@ -52,7 +54,7 @@ namespace GoSportBackEnd.Services.Services.EventProcessors
                         var tennisEventObject = JsonSerializer.Deserialize<TennisEventObject>(eventObj.ContentJson);
                         if (tennisEventObject == null)
                         {
-                            _logger.LogError("Unable to convert event object to matchId {@event}", eventObj);
+                            _logger.LogError("Unable to convert event object {@event}", eventObj);
                             await _eventLoggerGateway.LogEvent(eventObj, false);
                             return new ErrorResponse
                             {
@@ -84,9 +86,17 @@ namespace GoSportBackEnd.Services.Services.EventProcessors
         private async Task<MatchDetails> RunChangeServerAsync(string matchId)
         {
             var matchDetails = await _tennisGameGateway.GetAsync(matchId);
-            matchDetails.ServingPlayer = matchDetails.ServingPlayer == 1 ? 2 : 1;
-           var updatedMatchDetails = await _tennisGameGateway.UpdateAsync(matchDetails);
-           return updatedMatchDetails;
+            switch (matchDetails.ServingPlayer)
+            {
+                case 1:
+                case 2:
+                    matchDetails.ServingPlayer = matchDetails.ServingPlayer == 1 ? 2 : 1;
+                    var updatedDetails = await _tennisGameGateway.UpdateAsync(matchDetails);
+                    return updatedDetails;
+                    
+                default:
+                    return matchDetails;
+            }
         }
     }
 }

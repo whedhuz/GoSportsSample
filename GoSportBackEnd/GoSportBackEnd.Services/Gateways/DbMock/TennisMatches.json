@@ -1,7 +1,7 @@
 ﻿[
   {
     "Id": "test_1",
-    "ServingPlayer": 0,
+    "ServingPlayer": 1,
     "SetScores": [
       {
         "PlayerOneScore": 0,

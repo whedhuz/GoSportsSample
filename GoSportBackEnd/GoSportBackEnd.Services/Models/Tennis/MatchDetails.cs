@@ -13,7 +13,7 @@ namespace GoSportBackEnd.Services.Models.Tennis
         public List<SetScore> SetScores { get; set; } = new List<SetScore>();
         public CurrentGameScore CurrentGameScore { get; set; } = new CurrentGameScore();
 
-        // To be added: Player Details etc
+        // To be added: Player Details, teams, game format (number of set to be played) etc
     }
 
     public class SetScore
