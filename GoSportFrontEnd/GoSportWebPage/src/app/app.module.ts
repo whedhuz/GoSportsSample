@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MessageService } from './message.service';
 import { HttpErrorHandler } from './httpErrorHandler.service';
+import { TennisModule } from './tennis/tennis.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { HttpErrorHandler } from './httpErrorHandler.service';
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    TennisModule,
+    AppRoutingModule,
   ],
   providers: [
     HttpErrorHandler,
