@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
@@ -22,11 +23,24 @@ namespace GoSportBackEnd.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(string), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(SuccessResponse), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorResponse), (int) HttpStatusCode.BadRequest)]
         public async Task<ActionResult> Post(Event eventObj)
         {
-            await _eventHandler.ProcessEventAsync(eventObj);
-            return Ok(eventObj.Type);
+            var response = await _eventHandler.ProcessEventAsync(eventObj);
+
+            switch (response)
+            {
+                case ErrorResponse errorResponse:
+                    return BadRequest(errorResponse.ErrorMsg);
+                case SuccessResponse _:
+                    return Ok(response);
+                default:
+                {
+                    _logger.LogError("Unknown response type for event {@event}", eventObj);
+                    throw new ApplicationException("Unknown response type");
+                }
+            }
         }
     }
 }

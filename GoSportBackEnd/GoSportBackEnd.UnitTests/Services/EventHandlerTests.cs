@@ -26,7 +26,7 @@ namespace GoSportBackEnd.UnitTests.Services
             });
         }
 
-        public class WhenGivenCanBeProcessedEventType : EventHandlerTests
+        public class WhenEventTypeCanBeProcessed : EventHandlerTests
         {
             public override void Setup()
             {
@@ -50,6 +50,34 @@ namespace GoSportBackEnd.UnitTests.Services
                 
                 _eventProcessorMock.Verify(m => m.CanProcess("able.to.process"), Times.Once);
                 _eventProcessorMock.Verify(m => m.ProcessEvent(It.IsAny<Event>()), Times.Once);
+            }
+        }
+
+        public class WhenEventTypeCannotBeProcessed : EventHandlerTests
+        {
+            public override void Setup()
+            {
+                base.Setup();
+                _eventobj = new Event
+                {
+                    Type = "able.to.process",
+                    Content = new
+                    {
+                        name = "test name"
+                    }
+                };
+                
+                _eventProcessorMock.Setup(m => m.CanProcess("able.to.process")).Returns(false);
+            }
+
+            [Test]
+            public async Task ThenReturnsErrorResponse()
+            {
+                var response = await _sut.ProcessEventAsync(_eventobj);
+
+                Assert.IsAssignableFrom<ErrorResponse>(response);
+                _eventProcessorMock.Verify(m => m.CanProcess("able.to.process"), Times.Once);
+                _eventProcessorMock.Verify(m => m.ProcessEvent(It.IsAny<Event>()), Times.Never);
             }
         }
     }

@@ -5,6 +5,6 @@ namespace GoSportBackEnd.Services.Services.Interfaces
 {
     public interface IEventHandler
     {
-        Task ProcessEventAsync(Event eventObj);
+        Task<EventResponse> ProcessEventAsync(Event eventObj);
     }
 }

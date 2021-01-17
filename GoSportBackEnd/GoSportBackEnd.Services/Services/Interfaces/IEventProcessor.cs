@@ -6,6 +6,6 @@ namespace GoSportBackEnd.Services.Services.Interfaces
     public interface IEventProcessor
     {
         bool CanProcess(string eventType);
-        Task ProcessEvent(Event eventObj);
+        Task<EventResponse> ProcessEvent(Event eventObj);
     }
 }

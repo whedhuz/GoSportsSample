@@ -1,20 +1,37 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using GoSportBackEnd.Services.Models;
 using GoSportBackEnd.Services.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace GoSportBackEnd.Services.Services.EventProcessors
 {
     public class GameEventProcessor : IEventProcessor
     {
-        public bool CanProcess(string eventType)
+        private readonly ILogger<GameEventProcessor> _logger;
+
+        public string[] EventTypes = new[]
         {
-            throw new NotImplementedException();
+            "sample"
+        };
+
+        public GameEventProcessor(ILogger<GameEventProcessor> logger)
+        {
+            _logger = logger;
         }
 
-        public Task ProcessEvent(Event eventObj)
+        public bool CanProcess(string eventType)
         {
-            throw new NotImplementedException();
+            return EventTypes.Contains(eventType);
+        }
+
+        public async Task<EventResponse> ProcessEvent(Event eventObj)
+        {
+            return new SuccessResponse
+            {
+                Id = new Guid()
+            };
         }
     }
 }

@@ -18,13 +18,24 @@ namespace GoSportBackEnd.Services.Services
             _processors = processors;
         }
 
-        public async Task ProcessEventAsync(Event eventObj)
+        public async Task<EventResponse> ProcessEventAsync(Event eventObj)
         {
             var applicableProcessor = _processors.SingleOrDefault(p => p.CanProcess(eventObj.Type));
+            EventResponse response;
             if (applicableProcessor != null) 
             {
-                await applicableProcessor.ProcessEvent(eventObj);
+                response = await applicableProcessor.ProcessEvent(eventObj);
             }
+            else
+            {
+                _logger.LogError("Unhandled EventType {@eventObj}", eventObj);
+                response = new ErrorResponse
+                {
+                    ErrorMsg = "Unhandled Event type"
+                };
+            }
+
+            return response;
         }
     }
 }
