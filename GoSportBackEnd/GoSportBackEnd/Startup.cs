@@ -1,3 +1,6 @@
+using System.Linq;
+using System.Reflection;
+using GoSportBackEnd.Services.Services.EventProcessors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +32,7 @@ namespace GoSportBackEnd
             });
 
             services.AddScoped<IEventHandler, EventHandler>();
+            services.RegisterAllTypes<IEventProcessor>(new[] {typeof(GameEventProcessor).Assembly});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +55,17 @@ namespace GoSportBackEnd
             {
                 endpoints.MapControllers();
             });
+        }
+    }
+
+    public static class ServiceCollectionExtensions
+    {
+        public static void RegisterAllTypes<T>(this IServiceCollection services, Assembly[] assemblies,
+            ServiceLifetime lifetime = ServiceLifetime.Transient)
+        {
+            var typesFromAssemblies = assemblies.SelectMany(a => a.DefinedTypes.Where(x => x.GetInterfaces().Contains(typeof(T))));
+            foreach (var type in typesFromAssemblies)
+                services.Add(new ServiceDescriptor(typeof(T), type, lifetime));
         }
     }
 }
