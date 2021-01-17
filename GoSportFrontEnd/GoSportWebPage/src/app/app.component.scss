@@ -1,0 +1,159 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 8px 0;
+}
+
+p {
+  margin: 0;
+}
+
+label {
+  color: white;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.content {
+  display: flex;
+  margin: 82px auto 32px;
+  padding: 0 16px;
+  max-width: 960px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.card {
+  border-radius: 4px;
+  border: 1px solid #eee;
+  background-color: #fafafa;
+  height: 40px;
+  width: 200px;
+  margin: 0 8px 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  line-height: 24px;
+}
+
+.card-container .card:not(:last-child) {
+  margin-right: 0;
+}
+
+.card.card-small {
+  height: 16px;
+  width: 168px;
+}
+
+.card-container .card:not(.highlight-card) {
+  cursor: pointer;
+}
+
+.card-container .card:not(.highlight-card):hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
+}
+
+.card-container .card:not(.highlight-card):hover .material-icons path {
+  fill: rgb(105, 103, 103);
+}
+
+.card.highlight-card {
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
+  border: none;
+  width: auto;
+  min-width: 30%;
+  position: relative;
+}
+
+.card.card.highlight-card span {
+  margin-left: 60px;
+}
+
+.split {
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.split h2 {
+  color: white;
+  font-family: Arial;
+}
+
+.split p {
+  color: white;
+  font-family: Arial;
+}
+
+.top {
+  top: 0;
+  height: 30%;
+  background-color: #111;
+}
+
+.bottom {
+  top: 30%;
+  height: 70%;
+  background-color: red;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.centeredTop {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 767px) {
+
+  .card-container > *:not(.circle-link) ,
+  .terminal {
+    width: 100%;
+  }
+
+  .card:not(.highlight-card) {
+    height: 16px;
+    margin: 8px 0;
+  }
+
+  .card.highlight-card span {
+    margin-left: 72px;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  svg#rocket-smoke {
+    display: none;
+    visibility: hidden;
+  }
+}
