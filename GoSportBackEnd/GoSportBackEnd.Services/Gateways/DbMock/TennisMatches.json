@@ -1,0 +1,16 @@
+﻿[
+  {
+    "Id": "test_1",
+    "ServingPlayer": 1,
+    "SetScores": [
+      {
+        "PlayerOneScore": 0,
+        "PlayerTwoScore": 0
+      }
+    ],
+    "CurrentGameScore": {
+      "PlayerOneScore": "0",
+      "PlayerTwoScore": "0"
+    }
+  }
+]

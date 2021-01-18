@@ -1,0 +1,60 @@
+<div class="content" role="main">
+
+  <!-- Match Details -->
+  <div class="split top">
+    <div class="centered">
+      <app-tennis-match-details [matchDetail]="tennisMatchDetail"></app-tennis-match-details>
+    </div>
+  </div>
+
+  <!-- Event recorder -->
+  <div class="split bottom">
+    <div class="middleAlign">
+      <label for="fname">Employee name:</label>
+      <input type="text" id="fname" name="fname" [(ngModel)]="employeeName">
+      <span class="text-danger" *ngIf="!employeeName">Please fill employee name before proceeding</span>
+    </div>
+    <div class="centeredTop" *ngIf="employeeName">
+      <h2>Game Events</h2>
+      <p>Select an event:</p>
+
+      <div class="card-container">
+        <div class="card card-small" (click)="sendChangeServerEvent()">
+          <span>Change Server</span>
+        </div>
+
+        <!-- Scoring events -->
+        <table>
+          <tr>
+            <td>
+              <div class="card card-small" (click)="sendScorePlayerOneEvent()">
+                <span>Score Player 1</span>
+              </div>
+            </td>
+            <td>
+              <div class="card card-small" (click)="sendScorePlayerTwoEvent()">
+                <span>Score Player 2</span>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Set won events -->
+          <!-- <tr>
+            <td>
+              <div class="card card-small" (click)="selection.value = 'component'">
+                <span>Set won Player 1</span>
+              </div>
+            </td>
+            <td>
+              <div class="card card-small" (click)="selection.value = 'component'">
+                <span>Set won Player 2</span>
+              </div>
+            </td>
+          </tr> -->
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
