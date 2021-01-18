@@ -32,6 +32,14 @@ export class TennisComponent implements OnInit {
       .subscribe(matchDetails => this.tennisMatchDetail = matchDetails);
   }
 
+  playerOneServing(): boolean {
+    return this.tennisMatchDetail.servingPlayer == 1;
+  }
+
+  playerTwoServing(): boolean {
+    return this.tennisMatchDetail.servingPlayer == 2;
+  }
+
   sendEvent(eventName: string): void {
     console.log("event triggered", eventName);
     this.service.postEvent(eventName, this.matchId, "test")

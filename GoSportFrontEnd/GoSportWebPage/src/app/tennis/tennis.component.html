@@ -3,19 +3,23 @@
   <!-- Match Details -->
   <div class="split top">
     <div class="centered">
-      <label for="fname">Employee name:</label>
-      <input type="text" id="fname" name="fname">
       <h2>Match Details</h2>
       <div *ngIf="tennisMatchDetail">
         <table class="matchDetails">
           <tr>
-            <td>PlayerOne</td>
+            <th>Players</th>
+            <th *ngFor="let setScore of tennisMatchDetail.setScores; let i = index">
+              Set {{i+1}}
+            </th>
+          </tr>
+          <tr>
+            <td><span [ngClass]="{'dot' : playerOneServing()}"></span>PlayerOne</td>
             <td *ngFor="let setScore of tennisMatchDetail.setScores">
               {{setScore.playerOneScore}}
             </td>
           </tr>
           <tr>
-            <td></span>PlayerTwo</td>
+            <td><span [ngClass]="{'dot' : playerTwoServing()}"></span>PlayerTwo</td>
             <td *ngFor="let setScore of tennisMatchDetail.setScores">
               {{setScore.playerTwoScore}}
             </td>
@@ -27,6 +31,10 @@
 
   <!-- Event recorder -->
   <div class="split bottom">
+    <div class="middleAlign">
+      <label for="fname">Employee name:</label>
+      <input type="text" id="fname" name="fname">
+    </div>
     <div class="centeredTop">
       <h2>Game Events</h2>
       <p>Select an event:</p>
