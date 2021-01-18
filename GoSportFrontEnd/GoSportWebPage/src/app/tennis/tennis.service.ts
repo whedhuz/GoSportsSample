@@ -35,8 +35,6 @@ export class TennisService {
   }
 
   postEvent(eventType: string, matchId: string, employeeName: string): Observable<TennisMatchDetails> {
-    console.log("eventType", eventType, "matchid", matchId, "employeeName", employeeName);
-
     let eventObject: ITennisEventObject = { gameId: matchId };
     let event: ITennisEvent = {
       // TODO: Make unique sender request id

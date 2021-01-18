@@ -1,7 +1,3 @@
-import { switchMap } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable } from 'rxjs';
 
 import { TennisMatchDetails } from './tennisMatchDetails';
 import { TennisService } from './tennis.service';
@@ -18,7 +14,6 @@ export class TennisComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private service: TennisService
   ) {}
 
