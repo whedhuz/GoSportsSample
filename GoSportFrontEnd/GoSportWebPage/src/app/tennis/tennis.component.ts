@@ -14,6 +14,7 @@ import { TennisService } from './tennis.service';
 export class TennisComponent implements OnInit {
   tennisMatchDetail: TennisMatchDetails;
   matchId: string;
+  employeeName: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,8 +42,9 @@ export class TennisComponent implements OnInit {
   }
 
   sendEvent(eventName: string): void {
-    console.log("event triggered", eventName);
-    this.service.postEvent(eventName, this.matchId, "test")
+    // TODO: add text value validation and error display
+    // if (!this.employeeName || this.employeeName != '')
+    this.service.postEvent(eventName, this.matchId, this.employeeName)
   }
 
   sendChangeServerEvent(): void{
