@@ -1,6 +1,9 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { TennisMatchDetails } from './tennisMatchDetails';
 import { TennisService } from './tennis.service';
+import { TennisMatchDetailsComponent } from './tennis-match-details.component';
 
 @Component({
   selector: 'app-tennis-detail',
@@ -8,6 +11,7 @@ import { TennisService } from './tennis.service';
   styleUrls: ['./tennis.component.scss']
 })
 export class TennisComponent implements OnInit {
+  @ViewChild(TennisMatchDetailsComponent, { static: false }) matchDetailsC: TennisMatchDetailsComponent;
   tennisMatchDetail: TennisMatchDetails;
   matchId: string;
   employeeName: string;
@@ -40,6 +44,7 @@ export class TennisComponent implements OnInit {
     // TODO: add text value validation and error display
     // if (!this.employeeName || this.employeeName != '')
     this.service.postEvent(eventName, this.matchId, this.employeeName)
+      .subscribe(successResponse => this.tennisMatchDetail = successResponse.responseObj);
   }
 
   sendChangeServerEvent(): void{

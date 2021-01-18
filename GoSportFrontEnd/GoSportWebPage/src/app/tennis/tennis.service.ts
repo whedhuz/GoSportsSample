@@ -7,6 +7,7 @@ import { catchError } from 'rxjs/operators';
 
 import { HandleError, HttpErrorHandler } from '../httpErrorHandler.service';
 import { ITennisEvent, ITennisEventObject } from './tennisRequests';
+import { TennisEventSuccessResponse } from './tennisEventSuccessResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class TennisService {
       );
   }
 
-  postEvent(eventType: string, matchId: string, employeeName: string): Observable<TennisMatchDetails> {
+  postEvent(eventType: string, matchId: string, employeeName: string): Observable<TennisEventSuccessResponse> {
     let eventObject: ITennisEventObject = { gameId: matchId };
     let event: ITennisEvent = {
       // TODO: Make unique sender request id
@@ -45,9 +46,9 @@ export class TennisService {
     }
 
     let url = this.baseUrl + 'EventHook';
-    return this.http.post<TennisMatchDetails>(url, event)
+    return this.http.post<TennisEventSuccessResponse>(url, event)
       .pipe(
-        catchError(this.handleError<TennisMatchDetails>('postEvent'))
+        catchError(this.handleError<TennisEventSuccessResponse>('postEvent'))
       );
   }
 }

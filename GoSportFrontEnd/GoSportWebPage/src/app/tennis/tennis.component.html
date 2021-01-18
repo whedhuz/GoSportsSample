@@ -3,29 +3,7 @@
   <!-- Match Details -->
   <div class="split top">
     <div class="centered">
-      <h2>Match Details</h2>
-      <div *ngIf="tennisMatchDetail">
-        <table class="matchDetails">
-          <tr>
-            <th>Players</th>
-            <th *ngFor="let setScore of tennisMatchDetail.setScores; let i = index">
-              Set {{i+1}}
-            </th>
-          </tr>
-          <tr>
-            <td><span [ngClass]="{'dot' : playerOneServing()}"></span>PlayerOne</td>
-            <td *ngFor="let setScore of tennisMatchDetail.setScores">
-              {{setScore.playerOneScore}}
-            </td>
-          </tr>
-          <tr>
-            <td><span [ngClass]="{'dot' : playerTwoServing()}"></span>PlayerTwo</td>
-            <td *ngFor="let setScore of tennisMatchDetail.setScores">
-              {{setScore.playerTwoScore}}
-            </td>
-          </tr>
-        </table>
-      </div>
+      <app-tennis-match-details [matchDetail]="tennisMatchDetail"></app-tennis-match-details>
     </div>
   </div>
 

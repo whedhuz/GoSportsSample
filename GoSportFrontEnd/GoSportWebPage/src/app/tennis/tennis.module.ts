@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { TennisRoutingModule } from './tennis-routing.module';
 import { TennisComponent } from './tennis.component';
+import { TennisMatchDetailsComponent } from './tennis-match-details.component';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { TennisComponent } from './tennis.component';
     TennisRoutingModule
   ],
   declarations: [
-    TennisComponent
+    TennisComponent,
+    TennisMatchDetailsComponent
   ]
 })
 export class TennisModule {}
