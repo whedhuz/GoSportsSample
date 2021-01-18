@@ -12,7 +12,8 @@ import { TennisService } from './tennis.service';
   styleUrls: ['./tennis.component.scss']
 })
 export class TennisComponent implements OnInit {
-  tennisMatchDetail$: Observable<TennisMatchDetails>;
+  tennisMatchDetail: TennisMatchDetails;
+  matchId: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -22,25 +23,29 @@ export class TennisComponent implements OnInit {
 
 
   ngOnInit() {
-    this.tennisMatchDetail$ = this.route.paramMap.pipe(
-      switchMap((params: ParamMap) =>
-        this.service.getMatchDetails(params.get('id')))
-    );
+    this.getMatchDetails();
   }
 
-  sendEvent(eventName: string) {
+  getMatchDetails(): void {
+    this.matchId = this.route.snapshot.paramMap.get('id');
+    this.service.getMatchDetails(this.matchId)
+      .subscribe(matchDetails => this.tennisMatchDetail = matchDetails);
+  }
+
+  sendEvent(eventName: string): void {
     console.log("event triggered", eventName);
+    this.service.postEvent(eventName, this.matchId, "test")
   }
 
-  sendChangeServerEvent(){
+  sendChangeServerEvent(): void{
     this.sendEvent("game.tennis.changeserver");
   }
 
-  sendScorePlayerOneEvent(){
+  sendScorePlayerOneEvent(): void{
     this.sendEvent("game.tennis.score");
   }
 
-  sendScorePlayerTwoEvent(){
+  sendScorePlayerTwoEvent(): void{
     this.sendEvent("game.tennis.score");
   }
 }

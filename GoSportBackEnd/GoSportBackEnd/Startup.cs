@@ -31,9 +31,16 @@ namespace GoSportBackEnd
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GoSportBackEnd", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "GoSportBackEnd", Version = "v1"});
             });
             
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
             services.AddScoped<IEventHandler, EventHandler>();
             services.AddScoped<IEventLoggerGateway, EventLoggerGateway>();
             services.RegisterAllTypes<IEventProcessor>(new[] {typeof(TennisGameEventProcessor).Assembly});
@@ -50,6 +57,9 @@ namespace GoSportBackEnd
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GoSportBackEnd v1"));
             }
+            
+            // Enable Cors
+            app.UseCors("MyPolicy");
 
             app.UseHttpsRedirection();
 

@@ -6,17 +6,17 @@
       <label for="fname">Employee name:</label>
       <input type="text" id="fname" name="fname">
       <h2>Match Details</h2>
-      <div *ngIf="matchDetails$ | async as matchDetails">
+      <div *ngIf="tennisMatchDetail">
         <table class="matchDetails">
           <tr>
             <td>PlayerOne</td>
-            <td *ngFor="let setScore of matchDetails$.setScores | async">
+            <td *ngFor="let setScore of tennisMatchDetail.setScores">
               {{setScore.playerOneScore}}
             </td>
           </tr>
           <tr>
-            <td>PlayerTwo</td>
-            <td *ngFor="let setScore of matchDetails$.setScores | async">
+            <td></span>PlayerTwo</td>
+            <td *ngFor="let setScore of tennisMatchDetail.setScores">
               {{setScore.playerTwoScore}}
             </td>
           </tr>

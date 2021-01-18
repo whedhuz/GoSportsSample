@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { HandleError, HttpErrorHandler } from '../httpErrorHandler.service';
+import { ITennisEvent, ITennisEventObject } from './tennisRequests';
 
 @Injectable({
   providedIn: 'root'
@@ -26,10 +27,29 @@ export class TennisService {
 
     const options = matchId ? { params: new HttpParams().set('id', matchId) } : {};
 
-    let url = this.baseUrl + 'Game/Tennis'
+    let url = this.baseUrl + 'Game/Tennis';
     return this.http.get<TennisMatchDetails>(url, options)
       .pipe(
         catchError(this.handleError<TennisMatchDetails>('searchHeroes', null))
+      );
+  }
+
+  postEvent(eventType: string, matchId: string, submitter: string): Observable<TennisMatchDetails> {
+    console.log("eventType", eventType, "matchid", matchId);
+
+    let eventObject: ITennisEventObject = { gameId: matchId };
+    let event: ITennisEvent = {
+      // TODO: Make unique sender request id
+      id: matchId,
+      submitter: submitter,
+      type: eventType,
+      contentJson: JSON.stringify(eventObject)
+    }
+
+    let url = this.baseUrl + 'EventHook';
+    return this.http.post<TennisMatchDetails>(url, event)
+      .pipe(
+        catchError(this.handleError<TennisMatchDetails>('postEvent'))
       );
   }
 }
